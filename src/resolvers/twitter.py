@@ -12,7 +12,7 @@ class Twitter(StoringResolver):
 
     @property
     def regex_str(self):
-        return r"^(?:(https?://(?:\w+\.twimg\.com/media|p\.twimg\.com)/[\w\-]+\.\w+)(?::\w+)?|https?://(?:www\.)?twitter\.com/(?:#!/)?\w+/status(?:es)?/(\d+)/photo/1(?:/(?:\w+/?)?)?)(?:\?.*)?$"
+        return r"^(?:(https?://(?:\w+\.twimg\.com/(media|ext_tw_video_thumb)|p\.twimg\.com)/.+)(?::\w+)?|https?://(?:www\.)?twitter\.com/(?:#!/)?\w+/status(?:es)?/(\d+)/photo/1(?:/(?:\w+/?)?)?)(?:\?.*)?$"
     
     def get_parameters(self, match):
         return match.group(2)
