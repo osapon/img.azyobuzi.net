@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import sys
 
 from resolvers import *
 from resolvers.private_constant import *
@@ -12,8 +13,9 @@ class Twitter(StoringResolver):
 
     @property
     def regex_str(self):
-        return r"^(?:(https?://(?:\w+\.twimg\.com/(media|ext_tw_video_thumb)|p\.twimg\.com)/.+)(?::\w+)?|https?://(?:www\.)?twitter\.com/(?:#!/)?\w+/status(?:es)?/(\d+)/photo/1(?:/(?:\w+/?)?)?)(?:\?.*)?$"
-    
+        #return r"^(?:(https?://(?:\w+\.twimg\.com/(media|ext_tw_video_thumb)|p\.twimg\.com)/.+)(?::\w+)?|https?://(?:www\.)?twitter\.com/(?:#!/)?\w+/status(?:es)?/(\d+)/photo/1(?:/(?:\w+/?)?)?)(?:\?.*)?$"
+        return r"^(?:(https?://(?:\w+\.twimg\.com/(?:media|ext_tw_video_thumb)|p\.twimg\.com)/[\w\-]+\.\w+)(?::\w+)?|https?://(?:www\.)?twitter\.com/(?:#!/)?\w+/status(?:es)?/(\d+)/photo/1(?:/(?:\w+/?)?)?)(?:\?.*)?$"
+
     def get_parameters(self, match):
         return match.group(2)
 
@@ -28,7 +30,7 @@ class Twitter(StoringResolver):
         if result:
             return result[0]
 
-        resp, content = twitter_client.request("https://api.twitter.com/1.1/statuses/show.json?include_entities=true&id=" + param, "GET")
+        resp, content = twitter_client.request("https://api.twitter.com/1.1/statuses/show.json?tweet_mode=extended&include_entities=true&id=" + param, "GET")
 
         if resp["status"] == "404":
             raise PictureNotFoundError()
